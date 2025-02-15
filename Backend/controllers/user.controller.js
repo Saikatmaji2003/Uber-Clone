@@ -1,7 +1,9 @@
 const userModel = require("../models/user.model");
 const userService = require("../services/user.service")
 const { validationResult } = require("express-validator")
+const blackListTokenModel = require("../models/blackList.model");
 
+//Register
 module.exports.registerUser = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -27,7 +29,7 @@ module.exports.registerUser = async (req, res, next) => {
     res.status(201).json({ token, user });
 }
 
-
+//Login
 module.exports.loginUser=async (req,res,next)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -47,5 +49,27 @@ module.exports.loginUser=async (req,res,next)=>{
     }
 
     const token = user.generateAuthToken();
+    res.cookie("token",token);
     res.status(201).json({ token, user });
+}
+
+//Get User Profile
+
+module.exports.getUserProfile=async (req,res,next)=>{
+    res.status(200).json(req.user);
+};
+
+//Logout
+
+module.exports.logoutUser=async (req,res,next)=>{
+    res.clearCookie("token");
+    const token = req.cookies.token || req.headers.authorization.split(" ")[1];
+    // const blackListToken = new blackListTokenModel({token});
+    // await blackListToken.save();
+
+    //The above two lines can be written as below
+
+     await blackListTokenModel.create({token});
+     
+    res.status(200).json({message:"Logout success"});
 }

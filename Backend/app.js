@@ -3,6 +3,7 @@ dotenv.config();
 const cors=require("cors")
 const express=require("express");
 const app=express();
+const cookieParser=require("cookie-parser");
 
 const userRoutes=require("./routes/user.routes")
 app.use(express.json());
@@ -12,6 +13,7 @@ const connectToDB=require("./db/db");
 connectToDB(); 
 
 app.use(cors());
+app.use(cookieParser());
 
 app.get("/",(req,res)=>{
     res.send("Hello World");

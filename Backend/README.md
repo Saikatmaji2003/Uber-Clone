@@ -1,5 +1,4 @@
 # User Registration API
-
 ## **POST** `/users/register`
 
 ### **Description**
@@ -34,13 +33,18 @@ email (string, required): A valid email address (must be unique).
 password (string, required): The password (minimum 6 characters).
 
 
+# LoginUser API
 
-
-# `loginUser` Controller
-
-## Endpoint: `POST /login`
+## **POST** `/users/login`
 
 The `loginUser` controller is used to authenticate a user and generate an authentication token (JWT) upon successful login.
+
+### **Request**
+
+- **URL**: `/users/login`
+- **Method**: `POST`
+- **Headers**:
+  - `Content-Type: application/json`
 
 #### Request Body:
 
