@@ -25,13 +25,13 @@ The request body should be in JSON format and include the following fields:
   "email": "john.doe@example.com",
   "password": "strongpassword123"
 }
+```
 
 Fields Description:
 fullname.firstname (string, required): The first name of the user (minimum 3 characters).
 fullname.lastname (string, optional): The last name of the user (minimum 3 characters).
 email (string, required): A valid email address (must be unique).
 password (string, required): The password (minimum 6 characters).
-
 
 # LoginUser API
 
@@ -55,15 +55,77 @@ The request body should be a JSON object containing the user's credentials:
   "email": "user@example.com",
   "password": "yourpassword"
 }
+```
 
-##Validation:
+## Validation:
 The controller performs validation on the following fields:
 
 email: Must be a valid email format.
 password: Must be at least 6 characters long.
 
-##Response:
+## Response:
 If the login is successful, the controller will respond with the following JSON object:
 
-token (string): The JWT token generated for the authenticated user.
-user (object): The user object containing user details (excluding the password).
+```json
+{
+  "token": "JWT token",
+  "user": {
+    // user details
+  }
+}
+```
+
+# GetUserProfile API
+
+## **GET** `/users/profile`
+
+### **Description**
+Fetches the profile of the authenticated user.
+
+### **Request**
+
+- **URL**: `/users/profile`
+- **Method**: `GET`
+- **Headers**:
+  - `Authorization`: Bearer token (required)
+
+### **Response**
+
+- **Status**: `200 OK`
+- **Body**:
+  ```json
+  {
+    "user": {
+      "_id": "user_id",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com",
+      // other user fields
+    }
+  }
+  ```
+
+# LogoutUser API
+
+## **GET** `/users/logout`
+
+### **Description**
+Logs out the authenticated user by clearing the authentication token.
+
+### **Request**
+
+- **URL**: `/users/logout`
+- **Method**: `GET`
+- **Headers**:
+  - `Authorization`: Bearer token (required)
+
+### **Response**
+
+- **Status**: `200 OK`
+- **Body**:
+  ```json
+  {
+    "message": "Logout success"
+  }
+  ```
+
