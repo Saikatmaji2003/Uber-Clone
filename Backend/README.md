@@ -1,4 +1,4 @@
-# User Registration API
+# User Registration Endpoint
 ## **POST** `/users/register`
 
 ### **Description**
@@ -33,7 +33,7 @@ fullname.lastname (string, optional): The last name of the user (minimum 3 chara
 email (string, required): A valid email address (must be unique).
 password (string, required): The password (minimum 6 characters).
 
-# LoginUser API
+# LoginUser Endpoint
 
 ## **POST** `/users/login`
 
@@ -75,7 +75,7 @@ If the login is successful, the controller will respond with the following JSON 
 }
 ```
 
-# GetUserProfile API
+# GetUserProfile Endpoint
 
 ## **GET** `/users/profile`
 
@@ -105,7 +105,7 @@ Fetches the profile of the authenticated user.
   }
   ```
 
-# LogoutUser API
+# LogoutUser Endpoint
 
 ## **GET** `/users/logout`
 
