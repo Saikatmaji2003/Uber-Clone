@@ -129,3 +129,89 @@ Logs out the authenticated user by clearing the authentication token.
   }
   ```
 
+# Captain Registration Endpoint
+
+## **POST** `/captains/register`
+
+### **Description**
+This endpoint allows captains to register by providing their first name, last name, email, password, and vehicle details. The password is securely hashed before being saved to the database. Upon successful registration, a JSON Web Token (JWT) and captain details are returned.
+
+---
+
+### **Request**
+
+- **URL**: `/captains/register`
+- **Method**: `POST`
+- **Headers**:
+  - `Content-Type: application/json`
+
+#### **Request Body**
+The request body should be in JSON format and include the following fields:
+
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "strongpassword123",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+Fields Description:
+- `fullname.firstname` (string, required): The first name of the captain (minimum 3 characters).
+- `fullname.lastname` (string, required): The last name of the captain (minimum 3 characters).
+- `email` (string, required): A valid email address (must be unique).
+- `password` (string, required): The password (minimum 6 characters).
+- `vehicle.color` (string, required): The color of the vehicle (minimum 3 characters).
+- `vehicle.plate` (string, required): The plate number of the vehicle (minimum 3 characters).
+- `vehicle.capacity` (integer, required): The capacity of the vehicle (minimum 1).
+- `vehicle.vehicleType` (string, required): The type of the vehicle (must be one of "car", "motorcycle", "auto").
+
+### **Response**
+
+- **Status**: `201 Created`
+- **Body**:
+  ```json
+  {
+    "token": "JWT token",
+    "user": {
+      "_id": "captain_id",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com",
+      "vehicle": {
+        "color": "red",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+      // other captain fields
+    }
+  }
+  ```
+
+### **Example**
+```bash
+ json '{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "strongpassword123",
+  "vehicle": {
+    "color": "red",
+    "plate": "ABC123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}'
+```
