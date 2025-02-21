@@ -215,3 +215,137 @@ Fields Description:
   }
 }'
 ```
+# Captain Login Endpoint
+
+## **POST** `/captains/login`
+
+### **Description**
+This endpoint allows captains to log in by providing their email and password. Upon successful login, a JSON Web Token (JWT) and captain details are returned.
+
+---
+
+### **Request**
+
+- **URL**: `/captains/login`
+- **Method**: `POST`
+- **Headers**:
+  - `Content-Type: application/json`
+
+#### **Request Body**
+The request body should be in JSON format and include the following fields:
+
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "strongpassword123"
+}
+```
+
+Fields Description:
+- `email` (string, required): A valid email address.
+- `password` (string, required): The password (minimum 6 characters).
+
+### **Response**
+
+- **Status**: `200 OK`
+- **Body**:
+  ```json
+  {
+    "token": "JWT token",
+    "user": {
+      "_id": "captain_id",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com",
+      "vehicle": {
+        "color": "red",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+      // other captain fields
+    }
+  }
+  ```
+
+### **Example**
+```bash
+curl -X POST "http://localhost:3000/captains/login" -H "Content-Type: application/json" -d '{
+  "email": "john.doe@example.com",
+  "password": "strongpassword123"
+}'
+```
+
+# Get Captain Profile Endpoint
+
+## **GET** `/captains/profile`
+
+### **Description**
+Fetches the profile of the authenticated captain.
+
+---
+
+### **Request**
+
+- **URL**: `/captains/profile`
+- **Method**: `GET`
+- **Headers**:
+  - `Authorization`: Bearer token (required)
+
+### **Response**
+
+- **Status**: `200 OK`
+- **Body**:
+  ```json
+  {
+    "captain": {
+      "_id": "captain_id",
+      "firstname": "John",
+      "lastname": "Doe",
+      "email": "john.doe@example.com",
+      "vehicle": {
+        "color": "red",
+        "plate": "ABC123",
+        "capacity": 4,
+        "vehicleType": "car"
+      }
+      // other captain fields
+    }
+  }
+  ```
+
+### **Example**
+```bash
+curl -X GET "http://localhost:3000/captains/profile" -H "Authorization: Bearer <token>"
+```
+
+# Captain Logout Endpoint
+
+## **GET** `/captains/logout`
+
+### **Description**
+Logs out the authenticated captain by clearing the authentication token.
+
+---
+
+### **Request**
+
+- **URL**: `/captains/logout`
+- **Method**: `GET`
+- **Headers**:
+  - `Authorization`: Bearer token (required)
+
+### **Response**
+
+- **Status**: `200 OK`
+- **Body**:
+  ```json
+  {
+    "message": "Logout success"
+  }
+  ```
+
+### **Example**
+```bash
+curl -X GET "http://localhost:3000/captains/logout" -H "Authorization: Bearer <token>"
+```

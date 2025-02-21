@@ -1,6 +1,7 @@
 const captainModel = require("../models/captain.model");
+const blackListTokenModel=require("../models/blackList.model");
 const captainService = require("../services/captain.service");
-const { validationResult } = require("express-validator");
+const { validationResult} = require("express-validator");
 
 //Register a new captain
 module.exports.register = async (req, res) => {
@@ -36,3 +37,42 @@ module.exports.register = async (req, res) => {
     }
 }
 
+//Login a captain
+module.exports.login = async (req, res) => {
+    const errors=validationResult(req);
+
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    try {
+        const { email, password } = req.body;
+        const user = await captainModel.findOne({email}).select("+password");
+
+        if (!user) {
+            return res.status(400).json({ error: "Invalid email or password" });
+        }   
+        const validPassword = await user.comparePassword(password);
+        if (!validPassword) {
+            return res.status(400).json({ error: "Invalid email or password" });
+        }
+        const token = user.generateAuthToken();
+        res.cookie("token",token);
+        res.status(200).json({token, user});
+    }
+    catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+}
+
+//Get captain profile
+module.exports.getCaptainProfile=async (req,res,next)=>{
+    res.status(200).json({captain:req.captain});
+};
+
+//Logout a captain
+module.exports.logout = async (req, res) => {
+    const token = req.cookies.token || req.headers.authorization.split(" ")[1];
+    res.clearCookie("token");
+    await blackListTokenModel.create({ token });
+    res.status(200).json({ message: "Logout successfully" });
+}

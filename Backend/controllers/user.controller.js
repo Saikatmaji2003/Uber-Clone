@@ -54,16 +54,14 @@ module.exports.loginUser=async (req,res,next)=>{
 }
 
 //Get User Profile
-
 module.exports.getUserProfile=async (req,res,next)=>{
     res.status(200).json(req.user);
 };
 
 //Logout
-
 module.exports.logoutUser=async (req,res,next)=>{
-    res.clearCookie("token");
     const token = req.cookies.token || req.headers.authorization.split(" ")[1];
+    res.clearCookie("token");
     // const blackListToken = new blackListTokenModel({token});
     // await blackListToken.save();
 
