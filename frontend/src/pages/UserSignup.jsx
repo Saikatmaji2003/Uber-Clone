@@ -1,30 +1,43 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { useContext } from 'react';
+import { userDataContext } from '../context/UserContext';
+
 const UserSignUp = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setfirstName] = useState('');
   const [lastName, setlastName] = useState('');
   const [userData, setUserData] = useState({});
-
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(userDataContext);
   // Function to handle form submission
-  const submitHandler = (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
-    setUserData({
-      fullName:{
-        firstName: firstName,
-        lastName: lastName
+    const newUser = {
+      fullname: {
+        firstname: firstName,
+        lastname: lastName
       },
       email: email,
       password: password
-    });
+    };
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser)
+    if(response.status === 201){
+      const user=response.data.user;
+      const token=response.data.token;
+      setUser(user);
+      localStorage.setItem('token',token);
+      navigate('/home');
+    }
     setfirstName('');
     setlastName('');
     setEmail('');
     setPassword('');
   }
   return (
-      <div className='px-5 py-5 flex h-screen flex-col justify-between'>
+    <div className='px-5 py-5 flex h-screen flex-col justify-between'>
       <div>
         <img src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png" alt="" className='w-20 mb-5' />
         <form action="" onSubmit={(e) => submitHandler(e)}>
@@ -62,16 +75,16 @@ const UserSignUp = () => {
           />
           <button
             className='bg-[#111] text-white font-semibold px-4 py-2 mb-3 rounded w-full text-lg'>
-            Signup</button>
+            Create account</button>
           <p className='text-center'> Already have a account?
             <Link to='/login' className='text-blue-600'> Login here</Link>
           </p>
         </form>
       </div>
       <div>
-          <p className='text-[10px] leading-tight'>This site is protected by reCAPTCHA and the <span className='underline'>Google Privacy
-            Policy</span> and <span className='underline'>Terms of Service apply</span>.</p>
-        </div>
+        <p className='text-[10px] leading-tight'>This site is protected by reCAPTCHA and the <span className='underline'>Google Privacy
+          Policy</span> and <span className='underline'>Terms of Service apply</span>.</p>
+      </div>
     </div>
   )
 }
