@@ -19,7 +19,7 @@ module.exports.register = async (req, res) => {
 
         const hashPassword = await captainModel.hashPassword(password);
 
-        const user = await captainService.createUser(
+        const captain = await captainService.createUser(
             {
                 firstname: fullname.firstname,
                 lastname: fullname.lastname,
@@ -30,8 +30,8 @@ module.exports.register = async (req, res) => {
                 capacity: vehicle.capacity,
                 vehicleType: vehicle.vehicleType
             });
-        const token = user.generateAuthToken();
-        res.status(201).json({token, user});
+        const token = captain.generateAuthToken();
+        res.status(201).json({token, captain});
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -46,18 +46,18 @@ module.exports.login = async (req, res) => {
     }
     try {
         const { email, password } = req.body;
-        const user = await captainModel.findOne({email}).select("+password");
+        const captain = await captainModel.findOne({email}).select("+password");
 
-        if (!user) {
+        if (!captain) {
             return res.status(400).json({ error: "Invalid email or password" });
         }   
-        const validPassword = await user.comparePassword(password);
+        const validPassword = await captain.comparePassword(password);
         if (!validPassword) {
             return res.status(400).json({ error: "Invalid email or password" });
         }
-        const token = user.generateAuthToken();
+        const token = captain.generateAuthToken();
         res.cookie("token",token);
-        res.status(200).json({token, user});
+        res.status(200).json({token, captain});
     }
     catch (err) {
         res.status(500).json({ error: err.message });
