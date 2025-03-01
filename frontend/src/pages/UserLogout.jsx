@@ -12,7 +12,7 @@ const UserLogout = () => {
     }).then((response) => {
         if (response.status === 200) {
             localStorage.removeItem('token')
-            navigate('/')
+            navigate('/login')
         }
     })
     return (

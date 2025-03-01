@@ -2,8 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { captainDataContext } from '../context/CaptainContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+
 const CaptainProtectedWrapper = ({ children }) => {
-    const { captain, setCaptain } = useContext(captainDataContext);
+    const { setCaptain } = useContext(captainDataContext);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
@@ -11,35 +12,34 @@ const CaptainProtectedWrapper = ({ children }) => {
     useEffect(() => {
         if (!token) {
             navigate('/captain-login');
+            return;
         }
-    }, [token]);
 
-    axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-    })
-        .then((response) => {
-            if (response.status === 200) {
-                const data = response.data;
-                setCaptain(data.captain);
-                setIsLoading(false);
+        const fetchCaptainData = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                if (response.status === 200) {
+                    setCaptain(response.data.captain);
+                    setIsLoading(false);
+                }
+            } catch (error) {
+                console.error(error);
+                localStorage.removeItem('token');
+                navigate('/captain-login');
             }
+        };
 
-        }).catch((error) => {
-            console.error(error);
-            navigate('/captain-login');
-            localStorage.removeItem('token');
-        });
-
+        fetchCaptainData();
+    }, [token, navigate, setCaptain]); // Dependencies
 
     if (isLoading) {
-        return <h1>Loading...</h1>
+        return <h1>Loading...</h1>;
     }
 
-    return (
-        <>
-            {children}
-        </>
-    )
-}
+    return <>{children}</>;
+};
 
-export default CaptainProtectedWrapper
+export default CaptainProtectedWrapper;
