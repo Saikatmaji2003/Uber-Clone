@@ -7,12 +7,12 @@ const CaptainLogout = () => {
     const navigate = useNavigate()
     axios.get(`${import.meta.env.VITE_BASE_URL}/captains/logout`, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
         }
     }).then((response) => {
         if (response.status === 200) {
             localStorage.removeItem('token')
-            navigate('/')
+            navigate('/captain-login')
         }
     })
     return (
