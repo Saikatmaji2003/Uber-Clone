@@ -1,10 +1,10 @@
-import React, { use, useContext, useEffect,useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { userDataContext } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const UserProtectedWrapper = ({ children }) => {
-    const { user, setUser } = useContext(userDataContext);
+    const { setUser } = useContext(userDataContext);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
     const token = localStorage.getItem('token');
@@ -12,35 +12,34 @@ const UserProtectedWrapper = ({ children }) => {
     useEffect(() => {
         if (!token) {
             navigate('/login');
+            return; // Prevent further execution
         }
-    }, [token]);
 
-    axios.get(`${import.meta.env.VITE_BASE_URL}/users/profile`, {
-        headers: { Authorization: `Bearer ${token}` }
-    })
-        .then((response) => {
-            if (response.status === 200) {
-                const data = response.data;
-                setUser(data.user);
-                setIsLoading(false);
+        const fetchUserData = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/users/profile`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+
+                if (response.status === 200) {
+                    setUser(response.data.user);
+                    setIsLoading(false);
+                }
+            } catch (error) {
+                console.error(error);
+                localStorage.removeItem('token');
+                navigate('/login');
             }
+        };
 
-        }).catch((error) => {
-            console.error(error);
-            navigate('/login');
-            localStorage.removeItem('token');
-        });
-
+        fetchUserData();
+    }, [navigate, token]); // Dependencies
 
     if (isLoading) {
-        return <h1>Loading...</h1>
+        return <h1>Loading...</h1>;
     }
 
-    return (
-        <>
-            {children}
-        </>
-    )
-}
+    return <>{children}</>;
+};
 
-export default UserProtectedWrapper
+export default UserProtectedWrapper;
