@@ -40,7 +40,6 @@ const ConfirmedRide = ({ setvehicleFound, setconfirmRidePanel }) => {
           setconfirmRidePanel(false)
         }} className='w-full bg-green-600 p-2 text-white rounded-lg mt-5'>Confirm</button>
       </div>
-
     </div>
   )
 }

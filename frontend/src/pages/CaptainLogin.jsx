@@ -31,7 +31,7 @@ const CaptainLogin = () => {
   return (
     <div className='p-7 flex h-screen flex-col justify-between'>
       <div>
-        <img src="https://pngimg.com/d/uber_PNG24.png" alt="" className='w-20 mb-5' />
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iNzAiIHZpZXdCb3g9IjAgMCAzMDAgNzAiPjx0ZXh0IHg9IjEwIiB5PSI1MCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjQwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iYmxhY2siPlJpZGVTd2lmdDwvdGV4dD48L3N2Zz4=" alt="RideSwift" className='w-45 mb-5' />
         <form action="" onSubmit={(e) => submitHandler(e)}>
           <h3 className='text-lg mb-2 font-medium'>
             What's your email
