@@ -1,6 +1,6 @@
 import React from 'react'
 
-const LookingForDriver = ({ setvehicleFound }) => {
+const LookingForDriver = ({ setvehicleFound, pickup, destination, fare, vehicleType }) => {
     return (
         <div>
             <h5 className='absolute text-center p-1 top-0 w-[93%]' onClick={() => {
@@ -16,20 +16,20 @@ const LookingForDriver = ({ setvehicleFound }) => {
                         <i className="ri-map-pin-user-fill font-semibold"></i>
                         <div>
                             <h3 className='text-lg font-medium'>562/11-A-CB</h3>
-                            <p className='text-sm text-gray-700 -mt-1'>kankariya talab, Barasat</p>
+                            <p className='text-sm text-gray-700 -mt-1'>{pickup}</p>
                         </div>
                     </div>
                     <div className='flex items-center gap-5 p-3 border-b-2 border-gray-200'>
                         <i className="ri-map-pin-fill font-semibold"></i>
                         <div>
                             <h3 className='text-lg font-medium'>562/11-A-CB</h3>
-                            <p className='text-sm text-gray-700 -mt-1'>kankariya talab, Barasat</p>
+                            <p className='text-sm text-gray-700 -mt-1'>{destination}</p>
                         </div>
                     </div>
                     <div className='flex items-center gap-5 p-3'>
                         <i className="ri-wallet-3-fill font-semibold"></i>
                         <div>
-                            <h3 className='text-lg font-medium'>&#8377;194.35</h3>
+                            <h3 className='text-lg font-medium'>&#8377;{fare[vehicleType]}</h3>
                             <p className='text-sm text-gray-700 -mt-1'>Cash Cash</p>
                         </div>
                     </div>

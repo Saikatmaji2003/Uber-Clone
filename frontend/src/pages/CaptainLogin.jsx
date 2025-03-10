@@ -6,7 +6,7 @@ const CaptainLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [captainData, setcaptainData] = useState({})
-  const {captain,setCaptain}=useContext(captainDataContext);
+  const {captain,setCaptain,updateCaptain}=useContext(captainDataContext);
   const navigate=useNavigate();
 
 

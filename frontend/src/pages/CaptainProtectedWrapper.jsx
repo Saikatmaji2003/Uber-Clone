@@ -20,7 +20,6 @@ const CaptainProtectedWrapper = ({ children }) => {
                 const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-
                 if (response.status === 200) {
                     setCaptain(response.data.captain);
                     setIsLoading(false);
