@@ -31,12 +31,7 @@ module.exports.register = async (req, res) => {
                 vehicleType: vehicle.vehicleType
             });
         const token = captain.generateAuthToken();
-<<<<<<< HEAD
-        res.status(201).json({token, captain});
-=======
         res.status(201).json({ token, captain });
-        res.status(201).json({ token, user });
->>>>>>> b9140e445f5d4f10193ab513103e4fc0d207506a
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -51,45 +46,22 @@ module.exports.login = async (req, res) => {
     }
     try {
         const { email, password } = req.body;
-<<<<<<< HEAD
-        const captain = await captainModel.findOne({email}).select("+password");
-
-        if (!captain) {
-            return res.status(400).json({ error: "Invalid email or password" });
-        }   
-=======
         const captain = await captainModel.findOne({ email }).select("+password");
-        const user = await captainModel.findOne({ email }).select("+password");
 
         if (!captain) {
             return res.status(400).json({ error: "Invalid email or password" });
         }
->>>>>>> b9140e445f5d4f10193ab513103e4fc0d207506a
         const validPassword = await captain.comparePassword(password);
         if (!validPassword) {
             return res.status(400).json({ error: "Invalid email or password" });
         }
         const token = captain.generateAuthToken();
-<<<<<<< HEAD
-        res.cookie("token",token);
-        res.status(200).json({token, captain});
-=======
         res.cookie("token", token);
         res.status(200).json({ token, captain });
->>>>>>> b9140e445f5d4f10193ab513103e4fc0d207506a
     }
-        const validPassword = await user.comparePassword(password);
-    if (!validPassword) {
-        return res.status(400).json({ error: "Invalid email or password" });
-    }
-    const token = user.generateAuthToken();
-    res.cookie("token", token);
-    res.status(200).json({ token, user });
-
-}
     catch (err) {
-    res.status(500).json({ error: err.message });
-}
+        res.status(500).json({ error: err.message });
+    }
 }
 
 //Get captain profile
